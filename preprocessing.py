@@ -81,12 +81,6 @@ if __name__ == "__main__":
         -【總樓層數】需【大於等於十三層】"""
         df = df.filter("main_use = '住家用' and building_state like '%住宅大樓%' and total_floor_number >= 13")
         df = df.select(df.city, df.date, df.district, df.building_state)
-        #     print([i.city for i in df.select('city').distinct().collect()])
-        #     print([i.date for i in df.select('date').distinct().collect()])
-        #     print([i.total_floor_number for i in df.select('total_floor_number').distinct().collect()])
-        #     print([i.main_use for i in df.select('main_use').distinct().collect()])
-        #     print([i.building_state for i in df.select('building_state').distinct().collect()])
-        #     print(df.count())
         if result:
             result = result.union(df)
         else:
@@ -112,7 +106,7 @@ if __name__ == "__main__":
     # Change to HDFS if needed.
     init_folder("result")
     for r in glob.glob(f"{result_file_path}/*.json"):
-        n = int(re.search(r"part-(\d{5})-.+", r).group(1))
+        n = int(re.search(r"part-(\d{5})-.+", r).group(1)) + 1
         shutil.copy(r, f"result/result-part{n}.json")
 
     print("Process completed!")
